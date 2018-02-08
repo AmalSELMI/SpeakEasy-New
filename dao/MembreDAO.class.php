@@ -111,7 +111,7 @@
 		 * Déconnexion d'un membre.
 		 */
 		public function modifierStatut($idMembre, $statut){
-			$query = $this->db->prepare("UPDATE connexion SET statut_connexion = :statut WHERE id_user = :id_user");
+			$query = $this->db->prepare("UPDATE user SET statut_connexion = :statut WHERE id_user = :id_user");
 			$query->bindValue(':id_user', $idMembre, PDO::PARAM_INT);
 			$query->bindValue(':statut', $statut, PDO::PARAM_STR);
 			$query->execute();
@@ -142,7 +142,7 @@
 		 * Utiliser lors de la phase de vérification de l'unicité de l'adresse mail avant chaque nouvelle inscription.
 		 */
 		public function rechercherMembreConnecte($id_Membre){
-			$query = $this->db->prepare('SELECT pseudo FROM user INNER JOIN connexion on user.id_user = connexion.id_user WHERE connexion.statut_connexion LIKE "CONNECTE" AND user.id_user <> :id_user');
+			$query = $this->db->prepare('SELECT pseudo FROM user WHERE user.statut_connexion LIKE "CONNECTE" AND user.id_user <> :id_user');
 			$query->bindValue(':id_user', $id_Membre, PDO::PARAM_INT);
 			$query->execute();
 			$result = $query->fetchAll(PDO::FETCH_COLUMN, 0);
